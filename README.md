@@ -4,3 +4,5 @@ Collection includes
 - Login Failure - Post
 - Profile Update - Put
 - pulling records with delay - get
+
+Text files are included for the snippents of each postman activity
