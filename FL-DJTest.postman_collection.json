@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "10e60130-f00c-4288-8ef7-ada19dbe767b",
+		"name": "FL-DJTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "41837748"
+	},
+	"item": [
+		{
+			"name": "AccountCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"});\r",
+							"\r",
+							"setTimeout(()=>{},1000) \r",
+							"\r",
+							"\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.have.all.keys('nickname', 'job', 'email', 'first_name', 'last_name', 'avatar', 'id', 'createdAt');\r",
+							"\r",
+							"    pm.expect(responseData.nickname).to.be.a('string');\r",
+							"    pm.expect(responseData.job).to.be.a('string');\r",
+							"    pm.expect(responseData.email).to.be.a('string').that.matches(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is invalid\");\r",
+							"    pm.expect(responseData.first_name).to.be.a('string');\r",
+							"    pm.expect(responseData.last_name).to.be.a('string');\r",
+							"    pm.expect(responseData.avatar).to.be.a('string');\r",
+							"    pm.expect(responseData.id).to.be.a('string');\r",
+							"    pm.expect(responseData.createdAt).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Nickname must be a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.nickname).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Nickname should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is invalid\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"nickname\": \"DJ\",\r\n    \"job\": \"leader\",\r\n    \"email\": \"djy@gmail.com\",\r\n    \"first_name\": \"Domingo\",\r\n    \"last_name\": \"Yasay\",\r\n    \"avatar\": \"https://reqres.in/img/faces/2-image.jpg\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "SuccessfulLogin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"setTimeout(()=>{},1000) \r",
+							"\r",
+							"pm.test(\"Response contains the required field 'token'\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object').that.includes.all.keys('token');\r",
+							"    pm.expect(responseData.token).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Token is a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.token).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response content type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/login"
+			},
+			"response": []
+		},
+		{
+			"name": "LoginFailure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(400);\r",
+							"});\r",
+							"\r",
+							"setTimeout(()=>{},1000) \r",
+							"\r",
+							"pm.test(\"Response has the required error field\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.have.property('error');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Error message is a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.error).to.exist.and.to.be.a('string').and.to.have.lengthOf.above(0, \"Error message should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the response schema for error object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.have.property('error').that.is.a('string');\r",
+							"});\r",
+							"var responseData = pm.response.json();\r",
+							"\r",
+							"// Combine tests for response status and structure\r",
+							"pm.test(\"Response status code is 400 and body structure is valid\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(400);\r",
+							"    pm.expect(responseData).to.be.an('object').that.has.property('error');\r",
+							"});\r",
+							"\r",
+							"// Check that the error message is a non-empty string\r",
+							"pm.test(\"Error message is a non-empty string\", function () {\r",
+							"    pm.expect(responseData.error).to.exist.and.to.be.a('string').and.to.have.lengthOf.above(0, \"Error message should not be empty\");\r",
+							"});\r",
+							"\r",
+							"// Validate the response schema for error object\r",
+							"pm.test(\"Validate the response schema for error object\", function () {\r",
+							"    pm.expect(responseData).to.be.an('object').that.has.property('error').that.is.a('string');\r",
+							"});\r",
+							"\r",
+							"// Check if the response body contains the expected result\r",
+							"pm.test(\"Response body contains expected result\", function () {\r",
+							"    pm.expect(responseData).to.have.property('error').that.is.a('string').and.not.to.be.empty; // Assuming an empty error string is the expected result for this case\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/login"
+			},
+			"response": []
+		},
+		{
+			"name": "ProfileUpdate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"setTimeout(()=>{},1000) \r",
+							"\r",
+							"pm.test(\"Response has required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.have.all.keys('nickname', 'job', 'updatedAt');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"The nickname and job must be non-empty strings\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    \r",
+							"    pm.expect(responseData.nickname).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Nickname should not be empty\");\r",
+							"    pm.expect(responseData.job).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Job should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"The updatedAt field must be in a valid date format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.updatedAt).to.exist;\r",
+							"    pm.expect(new Date(responseData.updatedAt).getTime()).to.not.be.NaN;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nickname\": \"DJ\",\r\n\"job\": \"Software Tester\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/users/"
+			},
+			"response": []
+		},
+		{
+			"name": "with delay",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"setTimeout(()=>{},4000) \r",
+							"\r",
+							"pm.test(\"Validate the response Content-Type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.include.all.keys('page', 'per_page', 'total', 'total_pages', 'data', 'support');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate that the 'data' array contains objects with the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('array');\r",
+							"\r",
+							"    responseData.data.forEach(user => {\r",
+							"        pm.expect(user).to.be.an('object');\r",
+							"        pm.expect(user).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/users"
+			},
+			"response": []
+		}
+	]
+}
