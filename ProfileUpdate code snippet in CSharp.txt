@@ -1,0 +1,18 @@
+var options = new RestClientOptions("https://reqres.in")
+{
+  MaxTimeout = -1,
+};
+var client = new RestClient(options);
+var request = new RestRequest("/api/users/", Method.Put);
+request.AddHeader("x-api-key", "reqres-free-v1");
+request.AddHeader("Content-Type", "application/json");
+var body = @"{
+" + "\n" +
+@"""nickname"": ""DJ"",
+" + "\n" +
+@"""job"": ""Software Tester""
+" + "\n" +
+@"}";
+request.AddStringBody(body, DataFormat.Json);
+RestResponse response = await client.ExecuteAsync(request);
+Console.WriteLine(response.Content);

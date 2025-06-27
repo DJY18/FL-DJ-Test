@@ -1,0 +1,30 @@
+var options = new RestClientOptions("https://reqres.in")
+{
+  MaxTimeout = -1,
+};
+var client = new RestClient(options);
+var request = new RestRequest("/api/users", Method.Post);
+request.AddHeader("x-api-key", "reqres-free-v1");
+request.AddHeader("Content-Type", "application/json");
+var body = @"{
+" + "\n" +
+@"
+" + "\n" +
+@"    ""nickname"": ""DJ"",
+" + "\n" +
+@"    ""job"": ""leader"",
+" + "\n" +
+@"    ""email"": ""djy@gmail.com"",
+" + "\n" +
+@"    ""first_name"": ""Domingo"",
+" + "\n" +
+@"    ""last_name"": ""Yasay"",
+" + "\n" +
+@"    ""avatar"": ""https://reqres.in/img/faces/2-image.jpg""
+" + "\n" +
+@"    
+" + "\n" +
+@"}";
+request.AddStringBody(body, DataFormat.Json);
+RestResponse response = await client.ExecuteAsync(request);
+Console.WriteLine(response.Content);
